@@ -22,3 +22,5 @@ app.get("/rps",(request,response)=>{
     response.sendFile(path.join(PUBLIC_PATH,'pages','rps.html'))
 })
 app.listen(port, () => console.log(`Example app listening on port http://localhost:${port} !`))
+
+module.exports= app;
