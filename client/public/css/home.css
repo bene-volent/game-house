@@ -1,0 +1,88 @@
+*{
+    margin:0;
+    padding:0;
+}
+
+/* CSS FOR LOADING SCREEN  : UNRELATED TO ANYTHING ELSE */
+.loading-scene{
+    background-color:dimgray;
+    position:absolute;
+    height:100vh;
+    width: 100vw;
+    display: grid;
+    place-content: center;
+
+}
+
+.loading-scene[complete]{
+    margin-left:100vw;
+    transition: all 500ms linear;
+}
+
+
+@keyframes loading {
+    from{
+        rotate:0deg;
+    }
+    75%{
+        rotate:300deg;
+    }
+    
+    
+    to{rotate:360deg;}
+}
+
+.loading-circle{
+    color: black;
+    width:50px;
+    height:50px;
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+    border:none;
+    z-index: 1;
+    animation: loading 1000ms linear forwards infinite;
+
+}
+.loading-shadow {
+    width: 60px;
+    position: absolute;
+    top: calc(50% - 3px);
+    left: calc(50% - 20px);
+    height: 1px;
+    z-index:0;
+    box-shadow: -1rem 2rem 10px 2px #010101;
+}
+.loading-circle .dots{
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.loading-circle .dot-1{
+    top:10px;
+    left:10px;
+}
+.loading-circle .dot-2{
+    top:10px;
+    right:10px;
+}
+.loading-circle .dot-3{
+    left: 23px;
+    top: 23px;
+}
+.loading-circle .dot-4{
+    bottom:10px;
+    left:10px;
+}
+.loading-circle .dot-5{
+    bottom:10px;
+    right:10px;
+}
+body{
+    background-color: #010101;
+    color:white;
+    overflow-x: hidden;
+}
