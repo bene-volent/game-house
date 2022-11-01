@@ -43,16 +43,7 @@ function rotateStackBackward() {
     return screenStack;
 }
 
-function setPosition(isDeviceLarge) {
-    for (var i = 0; i < screenStack.length; i++)
-        if (isDeviceLarge) {
-            screenStack[i].style.left = `${i * 100}%`;
-            screenStack[i].style.top = `0`;
-        } else {
-            screenStack[i].style.top = `${i * 100}vh`;
-            screenStack[i].style.left = `0`;
-        }
-}
+
 
 var moveAnimationInterval;
 
@@ -63,9 +54,11 @@ function nextAnimation() {
     var distanceEachFrame = (100 / timeToNext) * (60 / 1000);
     var x = 100;
 
-    function updateScreen() {
+    function updateScreen(val) {
+        x = val?val:x
         if (isDeviceLarge) screenStack[1].style.left = `${x}%`;
         else screenStack[1].style.top = `${x}vh`;
+        
     }
 
     isDeviceLarge
@@ -75,13 +68,14 @@ function nextAnimation() {
 
     screenStack[0].style.zIndex = 0;
     screenStack[1].style.zIndex = 1;
+    for (var i = 2;i<screenStack.length;i++){
+        screenStack[i].style.zIndex = -1;
+    }
 
     if (moveAnimationInterval) {
-        x = 0;
-        updateScreen();
+        updateScreen(0);
         x = 100;
         rotateStackForward();
-        updateScreen();
 
         setPosition(isDeviceLarge);
 
@@ -95,11 +89,8 @@ function nextAnimation() {
         updateScreen();
         if (x <= 0) {
             x = 0;
+            updateScreen(0);
             rotateStackForward();
-            updateScreen();
-
-            setPosition(isDeviceLarge);
-
             clearInterval(moveAnimationInterval);
             moveAnimationInterval = undefined;
         }
@@ -125,15 +116,14 @@ function prevAnimation() {
 
     screenStack[0].style.zIndex = 0;
     screenStack[screenStack.length-1].style.zIndex = 1;
-
+    for (var i = 1;i<screenStack.length - 1;i++){
+        screenStack[i].style.zIndex = -1;
+    }
     if (moveAnimationInterval) {
         x = 0;
         updateScreen();
         x = -100;
         rotateStackBackward();
-        updateScreen();
-
-        setPosition(isDeviceLarge);
 
         clearInterval(moveAnimationInterval);
     }
@@ -145,10 +135,9 @@ function prevAnimation() {
         updateScreen();
         if (x >=0) {
             x = 0;
-            rotateStackBackward();
             updateScreen();
+            rotateStackBackward();
 
-            setPosition(isDeviceLarge);
 
             clearInterval(moveAnimationInterval);
             moveAnimationInterval = undefined;
