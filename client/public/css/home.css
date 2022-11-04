@@ -94,8 +94,9 @@ body {
     color: rgb(0, 0, 0);
     position: relative;
     font-family: var(--ff-main);
-    /* overflow: hidden;    */
+    overflow: hidden;   
 }
+
 
 #screens{
     position: relative;

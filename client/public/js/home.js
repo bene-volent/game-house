@@ -156,5 +156,5 @@ window.addEventListener("resize", () => {
     },1000);
 });
 
-document.addEventListener = startingSequence;
+document.querySelector('body').onload = startingSequence;
 setupArrows()
