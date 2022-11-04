@@ -16,140 +16,146 @@ function startingSequence() {
     }, 1000);
 }
 
-var screenStack = [
-    ".intro-screen",
-    ".rock-paper-scissors",
-    ".tic-tac-toe",
-    ".minesweeper",
-].map((value, index, arr) => {
-    return document.querySelector(value);
+var screenStack = [".intro-screen", ".rps", ".tictactoe", ".minesweeper"].map(
+    (value, index, arr) => {
+        return document.querySelector(value);
+    }
+);
+
+var onScreen = 0;
+function animateNext() {
+    if (onScreen < screenStack.length - 1) {
+        screenStack[++onScreen].toggleAttribute("CurrentScreen");
+    }
+}
+function animatePrev() {
+    if (onScreen > 0) {
+        screenStack[onScreen--].toggleAttribute("CurrentScreen");
+    }
+}
+
+// document.addEventListener("mousemove",(e)=>{
+//     screenStack[1].style.width = `${e.clientX/window.innerWidth * 100}%`
+//     screenStack[2].style.width = `${e.clientX/window.innerWidth * 100 - 25}%`
+//     screenStack[3].style.width = `${e.clientX/window.innerWidth * 100 - 50}%`
+// })
+var prevArrow = document.querySelector(`.arrows.prev-arrow`);
+var nextArrow = document.querySelector(`.arrows.next-arrow`);
+
+function enableNextArrows() {
+    var arrow = nextArrow;
+    if (arrow) {
+        if (arrow.hasAttribute("disabled")) {
+            arrow.toggleAttribute("disabled");
+            arrow.toggleAttribute("aria-disabled", false);
+        }
+    }
+}
+
+function disableNextArrows() {
+    var arrow = nextArrow;
+    if (arrow) {
+        if (!arrow.hasAttribute("disabled")) {
+            arrow.toggleAttribute("disabled");
+            arrow.toggleAttribute("aria-disabled", true);
+        }
+    }
+}
+function enablePrevArrows() {
+    var arrow = prevArrow;
+    if (arrow) {
+        if (arrow.hasAttribute("disabled")) {
+            arrow.toggleAttribute("disabled");
+            arrow.toggleAttribute("aria-disabled", false);
+        }
+    }
+}
+function disablePrevArrows() {
+    var arrow = prevArrow;
+    if (arrow) {
+        if (!arrow.hasAttribute("disabled")) {
+            arrow.toggleAttribute("disabled");
+            arrow.toggleAttribute("aria-disabled", true);
+        }
+    }
+}
+
+prevArrow.addEventListener("click", () => {
+    // If Intro-screen is already visible
+    if (onScreen == 0) {
+        prevArrow.style.animation = "";
+        prevArrow.offsetHeight;
+        prevArrow.style.animation = "shakeOnDisabled 500ms linear";
+        return;
+    }
+
+    // If other screen is present
+    if (onScreen != 0) {
+        animatePrev();
+        enableNextArrows();
+    }
+    // Incase Intro-screen is now present
+    if (onScreen == 0) {
+        disablePrevArrows();
+    }
 });
-var currentIndex = 0;
 
-function rotateStackForward() {
-    for (let i = 0; i < screenStack.length - 1; i++) {
-        var tmp = screenStack[i];
-        screenStack[i] = screenStack[i + 1];
-        screenStack[i + 1] = tmp;
+nextArrow.addEventListener("click", () => {
+    // If Intro-screen is already visible
+    if (onScreen == screenStack.length - 1) {
+        nextArrow.style.animation = "";
+        nextArrow.offsetHeight;
+        nextArrow.style.animation = "shakeOnDisabled 500ms linear";
+        return;
     }
-    return screenStack;
+
+    // If other screen is present
+    if (onScreen != screenStack.length - 1) {
+        animateNext();
+        enablePrevArrows();
+    }
+    // Incase Intro-screen is now present
+    if (onScreen == screenStack.length - 1) {
+        disableNextArrows();
+    }
+});
+
+function setupArrows() {
+    if (window.innerWidth <= 768) {
+        prevArrow.classList.remove("fa-chevron-circle-left");
+        prevArrow.classList.add("fa-chevron-circle-up");
+
+        nextArrow.classList.remove("fa-chevron-circle-right");
+        nextArrow.classList.add("fa-chevron-circle-down");
+    } else {
+        prevArrow.classList.add("fa-chevron-circle-left");
+        prevArrow.classList.remove("fa-chevron-circle-up");
+
+        nextArrow.classList.add("fa-chevron-circle-right");
+        nextArrow.classList.remove("fa-chevron-circle-down");
+    }
 }
-function rotateStackBackward() {
-    for (let i = screenStack.length-1; i >0; i--) {
-        var tmp = screenStack[i];
-        screenStack[i] = screenStack[i - 1];
-        screenStack[i - 1] = tmp;
-    }
-    return screenStack;
-}
 
 
+var resizeTimer;
+window.addEventListener("resize", () => {
+    setupArrows();
 
-var moveAnimationInterval;
-
-function nextAnimation() {
-    var timeToNext = 2;
-    var isDeviceLarge = window.matchMedia("( width > 768px )").matches;
-
-    var distanceEachFrame = (100 / timeToNext) * (60 / 1000);
-    var x = 100;
-
-    function updateScreen(val) {
-        x = val?val:x
-        if (isDeviceLarge) screenStack[1].style.left = `${x}%`;
-        else screenStack[1].style.top = `${x}vh`;
-        
-    }
-
-    isDeviceLarge
-        ? (screenStack[1].style.top = `0`)
-        : (screenStack[1].style.left = `0`);
-    updateScreen();
-
-    screenStack[0].style.zIndex = 0;
-    screenStack[1].style.zIndex = 1;
-    for (var i = 2;i<screenStack.length;i++){
-        screenStack[i].style.zIndex = -1;
-    }
-
-    if (moveAnimationInterval) {
-        updateScreen(0);
-        x = 100;
-        rotateStackForward();
-
-        setPosition(isDeviceLarge);
-
-        clearInterval(moveAnimationInterval);
-    }
-    screenStack[0].style.zIndex = 0;
-    screenStack[1].style.zIndex = 1;
-
-    moveAnimationInterval = setInterval(() => {
-        x -= distanceEachFrame;
-        updateScreen();
-        if (x <= 0) {
-            x = 0;
-            updateScreen(0);
-            rotateStackForward();
-            clearInterval(moveAnimationInterval);
-            moveAnimationInterval = undefined;
+    screenStack.forEach((_screen, index) => {
+        if (index != onScreen) {
+            _screen.style.opacity = "0";
         }
-    }, 1000 / 60);
-}
+    });
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        screenStack.forEach((_screen, index) => {
+            if (index != onScreen) {
+                _screen.style.opacity = "1";
+            }
+        });
+        console.log("resizeDone")
+    },1000);
+});
 
-function prevAnimation() {
-    var timeToNext = 2;
-    var isDeviceLarge = window.matchMedia("( width > 768px )").matches;
-
-    var distanceEachFrame = (100 / timeToNext) * (60 / 1000);
-    var x = -100;
-
-    function updateScreen() {
-        if (isDeviceLarge) screenStack[screenStack.length-1].style.left = `${x}%`;
-        else screenStack[screenStack.length-1].style.top = `${x}vh`;
-    }
-
-    isDeviceLarge
-        ? (screenStack[screenStack.length-1].style.top = `0`)
-        : (screenStack[screenStack.length-1].style.left = `0`);
-    updateScreen();
-
-    screenStack[0].style.zIndex = 0;
-    screenStack[screenStack.length-1].style.zIndex = 1;
-    for (var i = 1;i<screenStack.length - 1;i++){
-        screenStack[i].style.zIndex = -1;
-    }
-    if (moveAnimationInterval) {
-        x = 0;
-        updateScreen();
-        x = -100;
-        rotateStackBackward();
-
-        clearInterval(moveAnimationInterval);
-    }
-    screenStack[0].style.zIndex = 0;
-    screenStack[screenStack.length-1].style.zIndex = 1;
-
-    moveAnimationInterval = setInterval(() => {
-        x += distanceEachFrame;
-        updateScreen();
-        if (x >=0) {
-            x = 0;
-            updateScreen();
-            rotateStackBackward();
-
-
-            clearInterval(moveAnimationInterval);
-            moveAnimationInterval = undefined;
-        }
-    }, 1000 / 60);
-}
-
-
-document.querySelector("body").onload = startingSequence;
-document
-    .querySelectorAll(".arrows.next")
-    .forEach((ele) => ele.addEventListener("click", nextAnimation));
-    document
-    .querySelectorAll(".arrows.prev")
-    .forEach((ele) => ele.addEventListener("click", prevAnimation));
+document.addEventListener = startingSequence;
+setupArrows()

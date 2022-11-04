@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,14 @@
     <title>Bene's Game House</title>
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/global.css">
-    <script src="https://kit.fontawesome.com/daa6f974ad.js" crossorigin="anonymous"></script>    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/daa6f974ad.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <div class="loading-scene" loading>
+    <!-- <div class="loading-scene" loading>
         <div class="loading-circle">
             <div class="dots dot-1"></div>
             <div class="dots dot-2"></div>
@@ -19,37 +24,28 @@
             <div class="dots dot-5"></div>
         </div>
         <div class="loading-shadow"></div>
-    </div>
-    <header>
-            <button class="arrows prev up fas fa-chevron-up"></button>
-            <button class="arrows prev left fas fa-chevron-left"></button>
-        <div class="container">
+    </div> -->
+    <main id="screens">
+        <span role="button" class="arrows prev-arrow fas fa-chevron-circle-left" disabled aria-disabled="true"></span>
+        <div class="screens-container">
+            <div class="screen intro-screen">
+                <div class="title">Welcome to Bene's Online Game House</div>
+            </div>
+            <div class="screen rps">
+                <div class="title">A game of Rock Paper Scissors</div>
+            </div>
+            <div class="screen tictactoe">
+                <div class="title">A game of Tic-Tac-Toe</div>
+            </div>
+            <div class="screen minesweeper">
+                <div class="title">A game of Minesweeper</div>
+            </div>
+        </div>
+        <span role='button'class="arrows next-arrow  fas fa-chevron-circle-right"></span>
 
-            <div class="screens intro-screen" in-front>
-                <h1 class="title">
-                    Welcome to the Online Game house to spend your boring time.
-                </h1>
-            </div>
-            <div class="screens rock-paper-scissors">
-                <h1 class="title">
-                    A game of Rock Paper Scissors
-                </h1>
-            </div>
-            <div class="screens tic-tac-toe">
-                <h1 class="title">
-                    A game of Tic-Tac-Toe
-                </h1>
-            </div>
-            <div class="screens minesweeper">
-                <h1 class="title">
-                    A game of Minesweeper
-                </h1>
-            </div>
-        </div>  
-            <button class="arrows next right fas fa-chevron-right"></button>
-            <button class="arrows next down fas fa-chevron-down"></button>
-    </header>
+    </main>
 
     <script src="../js/home.js"></script>
 </body>
+
 </html>
