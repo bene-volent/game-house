@@ -153,9 +153,11 @@ window.addEventListener("resize", () => {
                 _screen.style.opacity = "1";
             }
         });
-        console.log("resizeDone")
     },1000);
 });
 
 document.addEventListener = startingSequence;
 setupArrows()
+setTimeout(() => {
+    window.scrollY(1)
+}, 0);
