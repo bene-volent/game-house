@@ -202,12 +202,12 @@ body {
 }
 @media (width < 768px) {
     .arrows{
-        left:calc(50% - 1.2rem);
+        top:calc(80vh - 1.2rem);
     }
     .next-arrow{
-        top:90vh;
+        right:30vw;
     }.prev-arrow{
-        top: 2vh;
+        left: 30vw;
     }
 }
 @keyframes shakeOnDisabled {

@@ -158,6 +158,3 @@ window.addEventListener("resize", () => {
 
 document.addEventListener = startingSequence;
 setupArrows()
-setTimeout(() => {
-    window.scrollY(1)
-}, 0);
