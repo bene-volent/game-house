@@ -79,8 +79,7 @@ function disablePrevArrows() {
         }
     }
 }
-
-prevArrow.addEventListener("click", () => {
+function prevArrowClickEvent(){
     // If Intro-screen is already visible
     if (onScreen == 0) {
         prevArrow.style.animation = "";
@@ -98,9 +97,10 @@ prevArrow.addEventListener("click", () => {
     if (onScreen == 0) {
         disablePrevArrows();
     }
-});
+}
+prevArrow.addEventListener("click", prevArrowClickEvent);
 
-nextArrow.addEventListener("click", () => {
+function nextArrowClickEvent(){
     // If Intro-screen is already visible
     if (onScreen == screenStack.length - 1) {
         nextArrow.style.animation = "";
@@ -118,7 +118,8 @@ nextArrow.addEventListener("click", () => {
     if (onScreen == screenStack.length - 1) {
         disableNextArrows();
     }
-});
+}
+nextArrow.addEventListener("click", nextArrowClickEvent);
 
 function setupArrows() {
     if (window.innerWidth <= 768) {
@@ -136,7 +137,6 @@ function setupArrows() {
     }
 }
 
-
 var resizeTimer;
 window.addEventListener("resize", () => {
     setupArrows();
@@ -153,8 +153,26 @@ window.addEventListener("resize", () => {
                 _screen.style.opacity = "1";
             }
         });
-    },1000);
+    }, 1000);
 });
 
-document.querySelector('body').onload = startingSequence;
-setupArrows()
+document.querySelector("body").onload = startingSequence;
+setupArrows();
+
+var scrollValue = 0;
+document.querySelector("#screens").addEventListener("mousewheel", (e) => {
+    scrollValue += e.deltaY / (window.innerHeight * 2);
+    scrollValue = Math.max(Math.min(scrollValue, screenStack.length), 0);
+    
+    floorSValue = Math.floor(scrollValue)
+    
+    if (floorSValue != onScreen) {
+
+        if (e.deltaY > 0 && floorSValue > onScreen) {
+            nextArrowClickEvent()
+        }
+        else if (e.deltaY<0 && floorSValue<onScreen){
+            prevArrowClickEvent()
+        }
+    }
+});
